@@ -2,12 +2,6 @@
 
 import { useEffect, useRef } from "react";
 
-const ORB = {
-  1: { size: 400, bg: "rgba(107,33,168,0.4)",   top: "-100px", right: "-80px",  animation: "orbFloat 8s ease-in-out infinite" },
-  2: { size: 250, bg: "rgba(192,132,252,0.25)",  bottom: "80px", right: "200px", animation: "orbFloat 11s ease-in-out infinite reverse" },
-  3: { size: 180, bg: "rgba(212,175,106,0.15)",  top: "200px",  left: "50px",   animation: "orbFloat 13s ease-in-out infinite" },
-};
-
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -20,7 +14,7 @@ export default function Hero() {
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          if (video) video.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+          if (video) video.style.transform = `translateY(${window.scrollY * 0.38}px)`;
           ticking = false;
         });
         ticking = true;
@@ -42,13 +36,13 @@ export default function Hero() {
         padding: "120px 60px 80px",
       }}
     >
-      {/* Video — extra height for parallax buffer */}
+      {/* Video */}
       <video
         ref={videoRef}
         style={{
           position: "absolute",
-          top: "-15%", left: 0,
-          width: "100%", height: "130%",
+          top: "-18%", left: 0,
+          width: "100%", height: "136%",
           objectFit: "cover",
           willChange: "transform",
         }}
@@ -56,92 +50,78 @@ export default function Hero() {
         autoPlay muted loop playsInline
       />
 
-      {/* Overlay */}
+      {/* Text-side gradient only — right half stays pure video */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "linear-gradient(135deg, rgba(59,7,100,0.85) 0%, rgba(59,7,100,0.55) 50%, rgba(59,7,100,0.75) 100%)",
+        background: "linear-gradient(to right, rgba(8,0,20,0.78) 0%, rgba(8,0,20,0.52) 40%, rgba(8,0,20,0.18) 65%, transparent 100%)",
+        pointerEvents: "none",
       }} />
 
-      {/* Radial glow */}
+      {/* Bottom vignette for stats readability */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 80% 70% at 70% 50%, rgba(107,33,168,0.3) 0%, transparent 70%)",
+        background: "linear-gradient(to top, rgba(8,0,20,0.55) 0%, transparent 35%)",
+        pointerEvents: "none",
       }} />
-
-      {/* Orbs */}
-      {Object.values(ORB).map((orb, i) => (
-        <div key={i} style={{
-          position: "absolute",
-          width: orb.size, height: orb.size,
-          background: orb.bg,
-          borderRadius: "50%",
-          filter: "blur(60px)",
-          pointerEvents: "none",
-          ...(orb as Record<string, string | number>),
-          animation: orb.animation,
-        }} />
-      ))}
 
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 2, maxWidth: "680px" }}>
-        {/* Eyebrow */}
+      <div style={{ position: "relative", zIndex: 2, maxWidth: "640px" }}>
         <p style={{
-          fontSize: "0.7rem", letterSpacing: "0.3em", textTransform: "uppercase",
-          color: "var(--gold)", marginBottom: "24px",
-          opacity: 0, animation: "fadeUp 0.8s 0.3s forwards",
+          fontSize: "0.68rem", letterSpacing: "0.32em", textTransform: "uppercase",
+          color: "var(--gold)", marginBottom: "22px",
+          opacity: 0, animation: "fadeUp 0.8s 0.2s forwards",
         }}>
           Chennai&apos;s Premier Salon Experience
         </p>
 
-        {/* Headline */}
         <h1
           className="font-display"
           style={{
-            fontSize: "clamp(3.2rem, 6vw, 6rem)",
+            fontSize: "clamp(3.4rem, 6.5vw, 6.5rem)",
             fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "-0.01em",
+            lineHeight: 1.02,
+            letterSpacing: "-0.015em",
             marginBottom: "28px",
             opacity: 0,
-            animation: "fadeUp 0.9s 0.5s forwards",
+            animation: "fadeUp 1s 0.4s forwards",
+            textShadow: "0 2px 30px rgba(0,0,0,0.4)",
           }}
         >
           Where Beauty<br />
-          <em style={{ fontStyle: "italic", color: "var(--purple-glow)", display: "block" }}>
+          <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>
             Finds Its Voice
           </em>
         </h1>
 
-        {/* Sub */}
         <p style={{
-          fontSize: "1rem", lineHeight: 1.8,
-          color: "rgba(253,251,255,0.65)",
-          maxWidth: "440px", marginBottom: "48px",
-          opacity: 0, animation: "fadeUp 0.9s 0.7s forwards",
+          fontSize: "1rem", lineHeight: 1.85,
+          color: "rgba(253,251,255,0.72)",
+          maxWidth: "420px", marginBottom: "48px",
+          opacity: 0, animation: "fadeUp 1s 0.6s forwards",
         }}>
           Step into a sanctuary of elegance. Transformations crafted with artistry,
           care, and a touch of the extraordinary.
         </p>
 
-        {/* CTAs */}
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", opacity: 0, animation: "fadeUp 0.9s 0.9s forwards" }}>
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", opacity: 0, animation: "fadeUp 1s 0.8s forwards" }}>
           <a
             href="#booking"
             style={{
               background: "linear-gradient(135deg, var(--purple-mid), var(--purple-light))",
               color: "var(--white)",
               padding: "16px 40px",
-              fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase",
+              fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase",
               borderRadius: "2px", textDecoration: "none",
               transition: "transform 0.3s, box-shadow 0.3s", display: "inline-block",
+              boxShadow: "0 4px 20px rgba(107,33,168,0.4)",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px rgba(107,33,168,0.6)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px rgba(107,33,168,0.65)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.transform = "";
-              (e.currentTarget as HTMLElement).style.boxShadow = "";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(107,33,168,0.4)";
             }}
           >
             Reserve Your Session
@@ -149,21 +129,22 @@ export default function Hero() {
           <a
             href="#services"
             style={{
-              background: "transparent",
+              background: "rgba(255,255,255,0.06)",
+              backdropFilter: "blur(10px)",
               color: "var(--white)",
               padding: "16px 40px",
-              border: "1px solid rgba(253,251,255,0.3)",
-              fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase",
+              border: "1px solid rgba(253,251,255,0.25)",
+              fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase",
               borderRadius: "2px", textDecoration: "none",
-              transition: "border-color 0.3s, color 0.3s", display: "inline-block",
+              transition: "border-color 0.3s, background 0.3s", display: "inline-block",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "var(--purple-glow)";
-              (e.currentTarget as HTMLElement).style.color = "var(--purple-glow)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(192,132,252,0.6)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(253,251,255,0.3)";
-              (e.currentTarget as HTMLElement).style.color = "var(--white)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(253,251,255,0.25)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
             }}
           >
             Explore Services
@@ -171,22 +152,22 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats — bottom right */}
+      {/* Stats */}
       <div style={{
         position: "absolute", right: "60px", bottom: "80px",
-        display: "flex", gap: "48px", zIndex: 2,
-        opacity: 0, animation: "fadeUp 0.9s 1.1s forwards",
+        display: "flex", gap: "52px", zIndex: 2,
+        opacity: 0, animation: "fadeUp 1s 1s forwards",
       }}>
         {[
-          { num: "15", sup: "+",   label: "Years of Craft" },
-          { num: "10k", sup: "+",  label: "Happy Clients" },
-          { num: "4.9", sup: "★",  label: "Avg Rating" },
+          { num: "15",  sup: "+", label: "Years of Craft" },
+          { num: "10k", sup: "+", label: "Happy Clients"  },
+          { num: "4.9", sup: "★", label: "Avg Rating"     },
         ].map((s) => (
           <div key={s.label} style={{ textAlign: "center" }}>
-            <div className="font-display" style={{ fontSize: "2.8rem", fontWeight: 300, color: "var(--white)", lineHeight: 1 }}>
+            <div className="font-display" style={{ fontSize: "2.8rem", fontWeight: 300, lineHeight: 1, textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
               {s.num}<span style={{ color: "var(--purple-glow)" }}>{s.sup}</span>
             </div>
-            <div style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(253,251,255,0.5)", marginTop: "6px" }}>
+            <div style={{ fontSize: "0.6rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(253,251,255,0.5)", marginTop: "6px" }}>
               {s.label}
             </div>
           </div>
@@ -195,16 +176,16 @@ export default function Hero() {
 
       {/* Scroll hint */}
       <div style={{
-        position: "absolute", bottom: "30px", left: "50%", transform: "translateX(-50%)",
+        position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)",
         display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", zIndex: 2,
-        opacity: 0, animation: "fadeIn 1s 1.5s forwards",
+        opacity: 0, animation: "fadeIn 1s 1.6s forwards",
       }}>
-        <span style={{ fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
+        <span style={{ fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
           Scroll
         </span>
         <div style={{
-          width: "1px", height: "40px",
-          background: "linear-gradient(to bottom, rgba(192,132,252,0.7), transparent)",
+          width: "1px", height: "44px",
+          background: "linear-gradient(to bottom, rgba(192,132,252,0.8), transparent)",
           animation: "scrollPulse 2s ease-in-out infinite",
         }} />
       </div>
