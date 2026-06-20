@@ -1,64 +1,93 @@
+"use client";
+
+const SERVICES = [
+  { icon: "✂️", name: "Hair Styling",       desc: "Expert cuts, blowouts, and styling that defines your signature look with precision.",         price: "From ₹499"  },
+  { icon: "🎨", name: "Hair Colouring",     desc: "Global colour, balayage, ombré, highlights — painted with artistry for every skin tone.",    price: "From ₹1,299" },
+  { icon: "💆", name: "Hair Spa",           desc: "Deep conditioning rituals that restore moisture, shine, and strength to every strand.",        price: "From ₹799"  },
+  { icon: "✨", name: "Keratin Treatment",  desc: "Frizz-free, silky smoothness that lasts for months — the ultimate hair transformation.",      price: "From ₹2,499" },
+  { icon: "👑", name: "Bridal Package",     desc: "Complete bridal transformations — makeup, hair, and styling for your most radiant day.",      price: "From ₹5,999" },
+  { icon: "💅", name: "Nail Art & Care",    desc: "Manicures, pedicures, and intricate nail art crafted with meticulous attention to detail.",    price: "From ₹399"  },
+];
+
 export default function Services() {
-  const services = [
-    { icon: "✂️", title: "Precision Haircuts", description: "Tailored cuts by expert stylists that complement your face shape and lifestyle perfectly.", tag: "Signature" },
-    { icon: "🎨", title: "Hair Coloring", description: "From bold fashion colors to natural-looking highlights — vibrant, long-lasting results.", tag: "Popular" },
-    { icon: "🌿", title: "Balayage & Ombre", description: "Hand-painted color techniques for a sun-kissed, dimensional finish that looks effortlessly natural.", tag: "Trending" },
-    { icon: "💆", title: "Hair Spa", description: "Deep conditioning treatments that restore shine, strength, and silkiness to damaged hair.", tag: "" },
-    { icon: "💫", title: "Hair Extensions", description: "Add length, volume, and drama with premium quality hair extensions, seamlessly blended.", tag: "" },
-    { icon: "👑", title: "Bridal Styling", description: "Complete bridal hair and makeup packages for your most special day — flawless from morning to midnight.", tag: "Special" },
-    { icon: "✨", title: "Keratin Treatment", description: "Smooth out frizz and transform unruly hair into sleek, manageable perfection for months.", tag: "" },
-    { icon: "🌸", title: "Beauty Services", description: "Eyebrows, facials, waxing, and more — complete beauty care under one luxurious roof.", tag: "" },
-  ];
-
   return (
-    <section id="services" className="py-24 md:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div className="max-w-2xl mb-16">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-px w-10 bg-[#6B21A8]" />
-            <span className="text-[#6B21A8] text-xs tracking-[0.3em] uppercase font-semibold">
-              What We Offer
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#1a0a2e] leading-tight mb-5" style={{ fontFamily: "var(--font-playfair)" }}>
-            Services Crafted for{" "}
-            <span className="purple-gradient italic">Perfection</span>
-          </h2>
-          <p className="text-[#6b5a7e] text-base leading-relaxed">
-            Every service is delivered with precision, premium products, and an unwavering commitment to making you look and feel your absolute best.
-          </p>
-        </div>
+    <section
+      id="services"
+      style={{ padding: "120px 60px", background: "#FDFBFF" }}
+    >
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: "72px" }}>
+        <span className="section-label reveal" style={{ color: "var(--purple-mid)" }}>Our Expertise</span>
+        <h2
+          className="font-display reveal"
+          style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, color: "var(--purple-deep)" }}
+        >
+          Services Tailored<br />
+          <em style={{ fontStyle: "italic", color: "var(--purple-light)" }}>For You</em>
+        </h2>
+      </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {services.map((s, i) => (
-            <div key={i} className="card-white rounded-2xl p-6 group cursor-default">
-              <div className="flex items-start justify-between mb-5">
-                <div className="service-icon">
-                  <span role="img" aria-label={s.title}>{s.icon}</span>
-                </div>
-                {s.tag && (
-                  <span className="text-[9px] tracking-widest uppercase text-[#6B21A8] bg-[#F5F0FF] border border-[#6B21A8]/20 px-2 py-0.5 rounded-full font-semibold">
-                    {s.tag}
-                  </span>
-                )}
-              </div>
-              <h3 className="text-[#1a0a2e] font-semibold text-base mb-2" style={{ fontFamily: "var(--font-playfair)" }}>
-                {s.title}
-              </h3>
-              <p className="text-[#6b5a7e] text-sm leading-relaxed">{s.description}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-14">
-          <a href="#booking" className="btn-purple px-10 py-4 rounded-full text-sm inline-block">
-            Book Any Service
-          </a>
-        </div>
+      {/* Grid */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        gap: "2px",
+        maxWidth: "1200px",
+        margin: "0 auto",
+      }}>
+        {SERVICES.map((s, i) => (
+          <ServiceCard key={i} {...s} />
+        ))}
       </div>
     </section>
+  );
+}
+
+function ServiceCard({ icon, name, desc, price }: { icon: string; name: string; desc: string; price: string }) {
+  return (
+    <div
+      className="reveal"
+      style={{
+        background: "#fff",
+        border: "1px solid rgba(107,33,168,0.1)",
+        boxShadow: "0 2px 20px rgba(107,33,168,0.06)",
+        padding: "48px 36px",
+        position: "relative",
+        overflow: "hidden",
+        cursor: "pointer",
+        transition: "box-shadow 0.4s, transform 0.3s, border-color 0.3s",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.boxShadow = "0 12px 40px rgba(107,33,168,0.18)";
+        el.style.borderColor = "rgba(168,85,247,0.35)";
+        el.style.transform = "translateY(-4px)";
+        const arrow = el.querySelector(".svc-arrow") as HTMLElement;
+        if (arrow) { arrow.style.color = "var(--purple-light)"; arrow.style.transform = "translate(4px,-4px)"; }
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.boxShadow = "0 2px 20px rgba(107,33,168,0.06)";
+        el.style.borderColor = "rgba(107,33,168,0.1)";
+        el.style.transform = "";
+        const arrow = el.querySelector(".svc-arrow") as HTMLElement;
+        if (arrow) { arrow.style.color = "rgba(168,85,247,0.3)"; arrow.style.transform = ""; }
+      }}
+    >
+      <span style={{ fontSize: "2rem", display: "block", marginBottom: "20px" }}>{icon}</span>
+      <div
+        className="svc-arrow"
+        style={{
+          position: "absolute", top: "40px", right: "36px",
+          fontSize: "1.2rem", color: "rgba(168,85,247,0.3)",
+          transition: "color 0.3s, transform 0.3s",
+        }}
+      >
+        ↗
+      </div>
+      <div className="font-display" style={{ fontSize: "1.5rem", fontWeight: 400, marginBottom: "12px", color: "var(--purple-deep)" }}>{name}</div>
+      <p style={{ fontSize: "0.82rem", lineHeight: 1.7, color: "rgba(30,0,60,0.55)", marginBottom: "20px" }}>{desc}</p>
+      <div className="font-display" style={{ fontSize: "1.1rem", color: "var(--purple-mid)", letterSpacing: "0.05em" }}>{price}</div>
+    </div>
   );
 }

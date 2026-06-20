@@ -1,95 +1,136 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const LINKS = [
+  { label: "Services", href: "#services" },
+  { label: "Gallery",  href: "#gallery"  },
+  { label: "Book",     href: "#booking"  },
+  { label: "About",    href: "#about"    },
+  { label: "Reviews",  href: "#reviews"  },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
-
-  const links = [
-    { label: "Services", href: "#services" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-purple-100 shadow-sm py-3"
-          : "bg-transparent py-5"
-      }`}
+      style={{
+        position: "fixed",
+        top: 0,
+        width: "100%",
+        zIndex: 100,
+        padding: "22px 60px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backdropFilter: "blur(14px)",
+        background: scrolled ? "rgba(30,4,60,0.95)" : "rgba(59,7,100,0.6)",
+        borderBottom: "1px solid rgba(168,85,247,0.15)",
+        transition: "background 0.4s",
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 bg-[#6B21A8] rounded-full flex items-center justify-center shadow-md">
-            <span className="text-white text-sm font-bold" style={{ fontFamily: "var(--font-playfair)" }}>N</span>
-          </div>
-          <div>
-            <div className="text-[#6B21A8] font-bold tracking-widest text-sm" style={{ fontFamily: "var(--font-playfair)" }}>
-              NATURALS
-            </div>
-            <div className="text-[#6b5a7e]/50 text-[9px] tracking-[0.25em] uppercase -mt-0.5">
-              Signature Salon
-            </div>
-          </div>
-        </Link>
+      {/* Logo */}
+      <a
+        href="#home"
+        className="font-display"
+        style={{ fontSize: "1.7rem", fontWeight: 600, letterSpacing: "0.04em", color: "var(--white)", textDecoration: "none" }}
+      >
+        Naturals<span style={{ color: "var(--purple-glow)" }}>.</span>
+      </a>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-10">
-          {links.map((l) => (
-            <a key={l.label} href={l.href} className="nav-link">
+      {/* Desktop links */}
+      <ul className="hidden md:flex" style={{ gap: "40px", listStyle: "none" }}>
+        {LINKS.map((l) => (
+          <li key={l.href}>
+            <a href={l.href} className="nav-link-dark">{l.label}</a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Desktop CTA */}
+      <a
+        href="#booking"
+        className="hidden md:inline-block"
+        style={{
+          background: "var(--purple-mid)",
+          color: "var(--white)",
+          padding: "10px 28px",
+          fontSize: "0.75rem",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          borderRadius: "2px",
+          textDecoration: "none",
+          transition: "background 0.3s, box-shadow 0.3s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "var(--purple-light)";
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 0 22px rgba(168,85,247,0.5)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "var(--purple-mid)";
+          (e.currentTarget as HTMLElement).style.boxShadow = "none";
+        }}
+      >
+        Book Now
+      </a>
+
+      {/* Mobile hamburger */}
+      <button
+        className="md:hidden"
+        style={{ background: "none", border: "none", color: "var(--purple-glow)", cursor: "pointer", fontSize: "1.5rem" }}
+        onClick={() => setOpen(!open)}
+        aria-label="Menu"
+      >
+        {open ? "✕" : "☰"}
+      </button>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            right: 0,
+            background: "rgba(30,4,60,0.98)",
+            backdropFilter: "blur(20px)",
+            borderTop: "1px solid rgba(168,85,247,0.15)",
+            padding: "24px 24px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          {LINKS.map((l) => (
+            <a key={l.href} href={l.href} className="nav-link-dark" style={{ fontSize: "0.9rem" }} onClick={() => setOpen(false)}>
               {l.label}
             </a>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+919876543210" className="text-[#6B21A8] text-sm flex items-center gap-2 hover:text-[#9333EA] transition-colors font-medium">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14v2.92z" />
-            </svg>
-            Call Now
-          </a>
-          <a href="#booking" className="btn-purple px-5 py-2 rounded-full text-xs">
-            Book Appointment
-          </a>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-[#6B21A8] p-2" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-purple-100 px-6 py-6 flex flex-col gap-5 shadow-lg">
-          {links.map((l) => (
-            <a key={l.label} href={l.href} className="nav-link text-base" onClick={() => setMenuOpen(false)}>
-              {l.label}
-            </a>
-          ))}
-          <a href="#booking" className="btn-purple px-5 py-3 rounded-full text-xs text-center mt-2" onClick={() => setMenuOpen(false)}>
-            Book Appointment
+          <a
+            href="#booking"
+            style={{
+              background: "var(--purple-mid)",
+              color: "var(--white)",
+              padding: "12px 24px",
+              fontSize: "0.75rem",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              borderRadius: "2px",
+              textDecoration: "none",
+              textAlign: "center",
+              marginTop: "8px",
+            }}
+            onClick={() => setOpen(false)}
+          >
+            Book Now
           </a>
         </div>
       )}

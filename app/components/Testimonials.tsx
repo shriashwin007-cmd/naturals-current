@@ -1,81 +1,86 @@
+"use client";
+
+const REVIEWS = [
+  {
+    stars: "★★★★★",
+    text: "I've been coming to Naturals for three years. Every visit feels like a reset for my soul — the team genuinely cares about how you feel walking out.",
+    name: "Priya Menon",
+    loc: "Anna Nagar, Chennai",
+    avatar: "🌸",
+    service: "Regular Client",
+  },
+  {
+    stars: "★★★★★",
+    text: "The balayage they did for my wedding was exactly the vision I had in my head. The attention to detail is unmatched anywhere in the city.",
+    name: "Deepa Krishnamurthy",
+    loc: "T. Nagar, Chennai",
+    avatar: "👰",
+    service: "Bridal Styling",
+  },
+  {
+    stars: "★★★★★",
+    text: "First time getting a keratin treatment and I was nervous — but the stylist walked me through everything and the result was phenomenal. Already booked my next visit.",
+    name: "Nandita Iyer",
+    loc: "Nungambakkam, Chennai",
+    avatar: "✨",
+    service: "Keratin Treatment",
+  },
+];
+
 export default function Testimonials() {
-  const reviews = [
-    {
-      name: "Priya Sharma",
-      location: "Chennai",
-      text: "The balayage they did on my hair is absolutely stunning. I've been to many salons but Naturals Signature is on a completely different level. The attention to detail is incredible.",
-      service: "Balayage",
-      rating: 5,
-    },
-    {
-      name: "Meera Krishnan",
-      location: "Bangalore",
-      text: "I came in for a bridal package and left feeling like a queen. The team made sure every single detail was perfect. My wedding day hair was everything I dreamed of.",
-      service: "Bridal Styling",
-      rating: 5,
-    },
-    {
-      name: "Ananya Reddy",
-      location: "Hyderabad",
-      text: "The keratin treatment transformed my frizzy hair completely. Three months later and my hair is still silky smooth. Worth every rupee — this is my go-to salon now.",
-      service: "Keratin Treatment",
-      rating: 5,
-    },
-  ];
-
   return (
-    <section className="py-24 md:py-32 bg-[#F5F0FF]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="max-w-2xl mb-16">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-px w-10 bg-[#6B21A8]" />
-            <span className="text-[#6B21A8] text-xs tracking-[0.3em] uppercase font-semibold">Client Stories</span>
+    <section
+      id="reviews"
+      style={{ padding: "120px 60px", background: "rgba(59,7,100,0.6)", textAlign: "center" }}
+    >
+      <span className="section-label reveal">Testimonials</span>
+      <h2 className="font-display reveal" style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, marginBottom: "64px" }}>
+        Words from Our<br />
+        <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>Beloved Clients</em>
+      </h2>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px", maxWidth: "1100px", margin: "0 auto" }}>
+        {REVIEWS.map((r) => (
+          <div
+            key={r.name}
+            className="reveal"
+            style={{
+              background: "rgba(107,33,168,0.1)",
+              border: "1px solid rgba(168,85,247,0.12)",
+              padding: "40px 32px",
+              borderRadius: "4px",
+              textAlign: "left",
+              transition: "border-color 0.3s, transform 0.3s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(192,132,252,0.3)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(168,85,247,0.12)";
+              (e.currentTarget as HTMLElement).style.transform = "";
+            }}
+          >
+            <div style={{ color: "var(--gold)", fontSize: "0.85rem", marginBottom: "20px", letterSpacing: "3px" }}>{r.stars}</div>
+            <p className="font-display" style={{ fontStyle: "italic", fontSize: "1.1rem", lineHeight: 1.6, color: "rgba(253,251,255,0.85)", marginBottom: "24px" }}>
+              &ldquo;{r.text}&rdquo;
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{
+                width: "40px", height: "40px", borderRadius: "50%",
+                background: "linear-gradient(135deg, var(--purple-mid), var(--purple-light))",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "1rem", flexShrink: 0,
+              }}>
+                {r.avatar}
+              </div>
+              <div>
+                <div style={{ fontSize: "0.8rem", letterSpacing: "0.08em" }}>{r.name}</div>
+                <div style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.4)", marginTop: "2px" }}>{r.loc}</div>
+              </div>
+            </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#1a0a2e] leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
-            What Our Clients{" "}
-            <span className="purple-gradient italic">Are Saying</span>
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviews.map((r, i) => (
-            <div key={i} className="card-white rounded-2xl p-8 flex flex-col">
-              <div className="flex gap-1 mb-5">
-                {Array.from({ length: r.rating }).map((_, j) => (
-                  <span key={j} className="text-[#9333EA] text-sm">★</span>
-                ))}
-              </div>
-              <blockquote className="text-[#6b5a7e] text-sm leading-relaxed flex-1 mb-6">
-                &ldquo;{r.text}&rdquo;
-              </blockquote>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[#1a0a2e] font-semibold text-sm">{r.name}</div>
-                  <div className="text-[#6b5a7e]/60 text-xs mt-0.5">{r.location}</div>
-                </div>
-                <span className="text-[9px] tracking-widest uppercase text-[#6B21A8] bg-[#F5F0FF] border border-[#6B21A8]/25 px-2 py-1 rounded-full font-semibold">
-                  {r.service}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Trust indicators */}
-        <div className="mt-16 pt-12 border-t border-[#6B21A8]/15 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { icon: "⭐", value: "4.9/5", label: "Google Rating" },
-            { icon: "💅", value: "50K+", label: "Monthly Appointments" },
-            { icon: "🏆", value: "20+", label: "Awards Won" },
-            { icon: "🌟", value: "98%", label: "Client Satisfaction" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-2xl mb-2">{stat.icon}</div>
-              <div className="text-2xl font-bold text-[#6B21A8] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>{stat.value}</div>
-              <div className="text-[#6b5a7e] text-xs tracking-wider uppercase">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </section>
   );

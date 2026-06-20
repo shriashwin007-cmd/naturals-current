@@ -1,96 +1,82 @@
+"use client";
 import Image from "next/image";
 
-const SHOWROOM_IMAGES = [
-  {
-    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892346/showroom_1._WhatsApp_Image_2026-06-19_at_7.51.21_PM_qs2bom.jpg",
-    label: "Our Salon",
-  },
-  {
-    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892347/showroom_2._WhatsApp_Image_2026-06-19_at_7.51.22_PM_mwvtit.jpg",
-    label: "Styling Stations",
-  },
-  {
-    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892348/showroom_3._WhatsApp_Image_2026-06-19_at_7.51.24_PM_imhkep.jpg",
-    label: "Wash Area",
-  },
-  {
-    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892350/showroom_4._WhatsApp_Image_2026-06-19_at_7.52.21_PM_faig2o.jpg",
-    label: "Premium Seating",
-  },
-  {
-    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892352/showroom_5._WhatsApp_Image_2026-06-19_at_7.53.04_PM_suzn9d.jpg",
-    label: "Interior Design",
-  },
+const IMAGES = [
+  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892346/showroom_1._WhatsApp_Image_2026-06-19_at_7.51.21_PM_qs2bom.jpg",  label: "Our Salon" },
+  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892347/showroom_2._WhatsApp_Image_2026-06-19_at_7.51.22_PM_mwvtit.jpg",  label: "Styling Stations" },
+  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892348/showroom_3._WhatsApp_Image_2026-06-19_at_7.51.24_PM_imhkep.jpg",  label: "Wash Area" },
+  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892350/showroom_4._WhatsApp_Image_2026-06-19_at_7.52.21_PM_faig2o.jpg",  label: "Premium Seating" },
+  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892352/showroom_5._WhatsApp_Image_2026-06-19_at_7.53.04_PM_suzn9d.jpg",  label: "Interior Design" },
 ];
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="py-24 md:py-32 bg-[#F5F0FF]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="gallery" style={{ padding: "120px 60px", background: "rgba(30,0,50,0.5)" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Header */}
-        <div className="max-w-2xl mb-14">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-px w-10 bg-[#6B21A8]" />
-            <span className="text-[#6B21A8] text-xs tracking-[0.3em] uppercase font-semibold">
-              Our Space
+        <div style={{ marginBottom: "56px" }}>
+          <span className="section-label reveal">Our Space</span>
+          <h2 className="font-display reveal" style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1 }}>
+            Step Inside<br />
+            <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>Our World</em>
+          </h2>
+        </div>
+
+        {/* Mosaic */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4px" }}>
+          {/* Large featured */}
+          <div
+            className="reveal"
+            style={{
+              gridColumn: "span 2",
+              position: "relative",
+              height: "460px",
+              overflow: "hidden",
+              border: "1px solid rgba(168,85,247,0.12)",
+            }}
+          >
+            <Image src={IMAGES[0].src} alt={IMAGES[0].label} fill className="object-cover" sizes="66vw" priority
+              style={{ transition: "transform 0.6s ease" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+            />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to top, rgba(59,7,100,0.7), transparent)",
+            }} />
+            <span style={{
+              position: "absolute", bottom: "20px", left: "24px",
+              fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase",
+              color: "rgba(253,251,255,0.7)",
+            }}>
+              {IMAGES[0].label}
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#1a0a2e] leading-tight mb-5" style={{ fontFamily: "var(--font-playfair)" }}>
-            Step Inside{" "}
-            <span className="purple-gradient italic">Our World</span>
-          </h2>
-          <p className="text-[#6b5a7e] text-base leading-relaxed">
-            A premium salon environment designed to make you feel relaxed, pampered,
-            and inspired from the moment you walk in.
-          </p>
-        </div>
 
-        {/* Mosaic Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {/* Large featured */}
-          <div className="col-span-2 md:col-span-2 gallery-item rounded-2xl overflow-hidden aspect-[4/3] md:aspect-auto md:h-[480px] relative shadow-lg">
-            <Image
-              src={SHOWROOM_IMAGES[0].src}
-              alt={SHOWROOM_IMAGES[0].label}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 66vw"
-              priority
-            />
-            <div className="overlay" />
-            <div className="absolute bottom-4 left-4 text-white text-xs tracking-widest uppercase font-semibold opacity-0 hover:opacity-100 transition-opacity">
-              {SHOWROOM_IMAGES[0].label}
-            </div>
+          {/* Right column — 2 stacked */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            {IMAGES.slice(1, 3).map((img, i) => (
+              <div key={i} style={{ position: "relative", flex: 1, overflow: "hidden", border: "1px solid rgba(168,85,247,0.12)" }}>
+                <Image src={img.src} alt={img.label} fill className="object-cover" sizes="33vw" />
+                <div style={{ position: "absolute", inset: 0, background: "rgba(59,7,100,0.3)", transition: "background 0.3s" }} />
+              </div>
+            ))}
           </div>
 
-          {/* Right column */}
-          {SHOWROOM_IMAGES.slice(1, 4).map((img, i) => (
-            <div key={i} className="gallery-item rounded-2xl overflow-hidden relative shadow-md" style={{ height: "152px" }}>
-              <Image
-                src={img.src}
-                alt={img.label}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 50vw, 33vw"
-              />
-              <div className="overlay" />
+          {/* Bottom row — 3 equal */}
+          {IMAGES.slice(2, 5).map((img, i) => (
+            <div key={i} className="reveal" style={{ position: "relative", height: "220px", overflow: "hidden", border: "1px solid rgba(168,85,247,0.12)" }}>
+              <Image src={img.src} alt={img.label} fill className="object-cover" sizes="33vw" />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(59,7,100,0.3)" }} />
             </div>
           ))}
-
-          {/* Bottom wide */}
-          <div className="col-span-2 md:col-span-3 gallery-item rounded-2xl overflow-hidden relative h-52 md:h-64 shadow-lg">
-            <Image
-              src={SHOWROOM_IMAGES[4].src}
-              alt={SHOWROOM_IMAGES[4].label}
-              fill
-              className="object-cover object-top"
-              sizes="100vw"
-            />
-            <div className="overlay" />
-          </div>
         </div>
 
-        <p className="text-center text-[#6b5a7e]/50 text-xs tracking-widest uppercase mt-8">
+        <p style={{
+          textAlign: "center", marginTop: "28px",
+          fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase",
+          color: "rgba(253,251,255,0.3)",
+        }}>
           Naturals Signature — Premium Salon Interior
         </p>
       </div>
