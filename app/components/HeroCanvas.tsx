@@ -1,18 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MorphingText } from "./ui/liquid-text";
-
-const HERO_TEXTS = [
-  "Where Beauty",
-  "Finds Its Voice",
-  "Hair Styling",
-  "Feel Radiant",
-  "Bridal Looks",
-  "Be Yourself",
-  "Naturals",
-  "Transform Now",
-];
 
 const FRAME_COUNT     = 240;
 const PX_PER_FRAME    = 31;                          // 22 * 1.4 → 40% slower
@@ -135,45 +123,9 @@ export default function HeroCanvas() {
           ref={canvasRef}
           style={{ display: "block", width: "100%", height: "100%" }}
         />
-        {/* Morphing text — centred overlay */}
         <div style={{
-          position: "absolute", inset: 0, zIndex: 3,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          pointerEvents: "none",
-        }}>
-          {/* Dark scrim behind text only */}
-          <div style={{
-            position: "absolute",
-            top: "50%", left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "100%", height: "40%",
-            background: "radial-gradient(ellipse 70% 100% at center, rgba(10,0,25,0.55) 0%, transparent 100%)",
-            pointerEvents: "none",
-          }} />
-          <div style={{
-            position: "relative",
-            width: "100%",
-            maxWidth: "1000px",
-            padding: "0 48px",
-            fontFamily: "var(--font-cormorant), Georgia, serif",
-            fontSize: "clamp(3.5rem, 9vw, 8.5rem)",
-            fontWeight: 300,
-            color: "#FDFBFF",
-            lineHeight: 1,
-            letterSpacing: "-0.02em",
-            textShadow: "0 2px 60px rgba(0,0,0,0.7), 0 0 100px rgba(192,132,252,0.25)",
-          }}>
-            <MorphingText
-              texts={HERO_TEXTS}
-              className="hero-morph-text"
-            />
-          </div>
-        </div>
-
-        {/* Bottom fade — blend into marquee (purple-mid) */}
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: "260px",
-          background: "linear-gradient(to bottom, transparent 0%, rgba(59,7,100,0.6) 60%, #6B21A8 100%)",
+          position: "absolute", bottom: 0, left: 0, right: 0, height: "200px",
+          background: "linear-gradient(to bottom, transparent, var(--purple-deep))",
           pointerEvents: "none",
         }} />
       </div>
