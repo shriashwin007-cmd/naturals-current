@@ -1,6 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { MorphingText } from "./ui/liquid-text";
+
+const HERO_TEXTS = [
+  "Where Beauty",
+  "Finds Its Voice",
+  "Hair Styling",
+  "Feel Radiant",
+  "Bridal Looks",
+  "Be Yourself",
+  "Naturals",
+  "Transform Now",
+];
 
 const FRAME_COUNT     = 240;
 const PX_PER_FRAME    = 31;                          // 22 * 1.4 → 40% slower
@@ -123,6 +135,21 @@ export default function HeroCanvas() {
           ref={canvasRef}
           style={{ display: "block", width: "100%", height: "100%" }}
         />
+        {/* Morphing text overlay — centred on canvas */}
+        <div style={{
+          position: "absolute", inset: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          pointerEvents: "none", zIndex: 2,
+        }}>
+          <div style={{ width: "100%", maxWidth: "900px", padding: "0 40px" }}>
+            <MorphingText
+              texts={HERO_TEXTS}
+              className="hero-morph-text"
+            />
+          </div>
+        </div>
+
+        {/* Bottom fade */}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0, height: "200px",
           background: "linear-gradient(to bottom, transparent, var(--purple-deep))",

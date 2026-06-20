@@ -120,6 +120,17 @@ body {
   to   { opacity:1; transform:translateY(0); }
 }
 
+/* ── Hero morphing text ── */
+.hero-morph-text {
+  height: clamp(80px, 12vw, 160px);
+  font-family: var(--font-cormorant), Georgia, serif !important;
+  font-size: clamp(3rem, 8vw, 7.5rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.02em;
+  color: #FDFBFF;
+  text-shadow: 0 4px 50px rgba(0,0,0,0.55), 0 0 80px rgba(192,132,252,0.3);
+}
+
 @keyframes shimmerGold {
   0%   { background-position: -200% center; }
   100% { background-position:  200% center; }
