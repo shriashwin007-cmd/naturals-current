@@ -1,5 +1,5 @@
 import Navbar       from "./components/Navbar";
-import Hero          from "./components/Hero";
+import HeroCanvas    from "./components/HeroCanvas";
 import MarqueeBanner from "./components/MarqueeBanner";
 import Services      from "./components/Services";
 import Gallery       from "./components/Gallery";
@@ -16,7 +16,7 @@ export default function Home() {
       <ScrollReveal />
       <Navbar />
       <main>
-        <Hero />
+        <HeroCanvas />
         <MarqueeBanner />
         <Services />
         <Gallery />
