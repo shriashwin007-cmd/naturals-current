@@ -52,7 +52,7 @@ export default function Hero() {
           objectFit: "cover",
           willChange: "transform",
         }}
-        src="/hero.mp4"
+        src="https://res.cloudinary.com/dxvui0xkz/video/upload/v1781891967/Animate_20Keyframes_20-_20Slow_20cinematic_20push-in_20through_20a_20premium_20purple_20beauty_20atmosphere__20Silk_20ribbons_d3neoj.mp4"
         autoPlay muted loop playsInline
       />
 
