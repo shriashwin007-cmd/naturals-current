@@ -13,17 +13,17 @@ export default function Services() {
   return (
     <section
       id="services"
-      style={{ padding: "120px 60px", background: "#FDFBFF" }}
+      style={{ padding: "120px 60px", background: "linear-gradient(to bottom, #4A1175 0%, #FDFBFF 18%, #FDFBFF 100%)" }}
     >
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "72px" }}>
-        <span className="section-label reveal" style={{ color: "var(--purple-mid)" }}>Our Expertise</span>
+        <span className="section-label reveal" style={{ color: "var(--gold)" }}>Our Expertise</span>
         <h2
           className="font-display reveal"
-          style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, color: "var(--purple-deep)" }}
+          style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, color: "#FDFBFF" }}
         >
           Services Tailored<br />
-          <em style={{ fontStyle: "italic", color: "var(--purple-light)" }}>For You</em>
+          <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>For You</em>
         </h2>
       </div>
 
