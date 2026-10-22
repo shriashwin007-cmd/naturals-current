@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 
 const FRAME_COUNT  = 240;
-const PX_PER_FRAME = 31;                            // 22 * 1.4 → 40% slower
-const TOTAL_SCROLL = FRAME_COUNT * PX_PER_FRAME;    // 7440px runway
-const LERP         = 0.10;                          // smoothing (lower = smoother)
+const PX_PER_FRAME = 24;                            // scroll px per frame (lower = slower, more cinematic)
+const TOTAL_SCROLL = FRAME_COUNT * PX_PER_FRAME;    // 5760px runway
+const LERP         = 0.12;                          // smoothing (lower = smoother)
 
 /* Frames are loaded on demand instead of all 240 up front (that was ~22.8 MB). */
 const PRELOAD_RADIUS = 10;   // frames kept warm behind the current position

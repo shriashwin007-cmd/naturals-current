@@ -1,13 +1,25 @@
+/**
+ * ── Brand, contact and branch data ─────────────────────────────────────────
+ *
+ * NOTE: every contact value below is SAMPLE DATA and is deliberately
+ * non-routable / non-existent so nobody can mistake it for a live business.
+ * Replace the values marked "SAMPLE" with the real ones before going live.
+ *
+ * - Phone numbers use the all-zeros +91 00000 0000X pattern (not assigned).
+ * - Email uses the RFC 2606 reserved `example.com` domain.
+ * - Addresses use "Sample Street" and the non-existent pincode 600000.
+ * - Map queries resolve to the district only, never to a specific building.
+ */
 export const SITE = {
   name: "Naturals",
-  domain: "naturalsalon.in",
+  domain: "example.com", // SAMPLE
   tagline: "Where Beauty Begins",
   city: "Chennai",
   region: "Tamil Nadu",
-  phoneDisplay: "+91 44 2345 6789",
-  phoneHref: "tel:+914423456789",
-  whatsapp: "+91 98765 43210",
-  email: "hello@naturalsalon.in",
+  phoneDisplay: "+91 00000 00000", // SAMPLE
+  phoneHref: "tel:+910000000000", // SAMPLE
+  whatsapp: "+91 00000 00000", // SAMPLE
+  email: "hello@example.com", // SAMPLE
   hours: "10:00 AM – 8:00 PM",
   hoursDetail: "Open every day, all week",
   founded: 2009,
@@ -29,27 +41,27 @@ export const BRANCHES: Branch[] = [
     id: "anna-nagar",
     name: "Anna Nagar",
     area: "Anna Nagar West",
-    address: "42, 2nd Avenue, Anna Nagar West, Chennai 600040",
-    phone: "+91 44 2625 4100",
-    phoneHref: "tel:+914426254100",
+    address: "No. 00, Sample Street, Anna Nagar West, Chennai 600000", // SAMPLE
+    phone: "+91 00000 00001", // SAMPLE
+    phoneHref: "tel:+910000000001", // SAMPLE
     mapQuery: "Anna Nagar, Chennai, Tamil Nadu",
   },
   {
     id: "t-nagar",
     name: "T. Nagar",
     area: "T. Nagar Main",
-    address: "18, Ranganathan Street, T. Nagar, Chennai 600017",
-    phone: "+91 44 2833 2200",
-    phoneHref: "tel:+914428332200",
+    address: "No. 00, Sample Street, T. Nagar Main, Chennai 600000", // SAMPLE
+    phone: "+91 00000 00002", // SAMPLE
+    phoneHref: "tel:+910000000002", // SAMPLE
     mapQuery: "T. Nagar, Chennai, Tamil Nadu",
   },
   {
     id: "nungambakkam",
     name: "Nungambakkam",
     area: "Nungambakkam",
-    address: "7, Habibullah Road, Nungambakkam, Chennai 600024",
-    phone: "+91 44 2817 6600",
-    phoneHref: "tel:+914428176600",
+    address: "No. 00, Sample Street, Nungambakkam, Chennai 600000", // SAMPLE
+    phone: "+91 00000 00003", // SAMPLE
+    phoneHref: "tel:+910000000003", // SAMPLE
     mapQuery: "Nungambakkam, Chennai, Tamil Nadu",
   },
 ];

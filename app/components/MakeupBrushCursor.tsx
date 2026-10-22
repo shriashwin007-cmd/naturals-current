@@ -25,6 +25,13 @@ type Particle = {
 const INTERACTIVE = "a, button, input, select, textarea, label, summary, [role='button'], [role='tab']";
 const TEXT_INPUT = "input, textarea, [contenteditable='true']";
 
+/* ── Feel ── */
+const FOLLOW    = 0.15;   // how tightly the brush tracks the pointer (lower = floatier)
+const TRAIL_MIN = 3;      // particles emitted every tick, even when barely moving
+const MAX_STEPS = 9;      // cap on particles per tick
+const MAX_PARTICLES = 420; // alive particle budget
+const TRAIL_ALPHA  = 0.62; // paint opacity (additive blending saturates fast)
+
 /* The brush is drawn pointing down-right, with its tip at (24, 42). */
 const TIP_X = 24;
 const TIP_Y = 42;
@@ -104,28 +111,29 @@ export default function MakeupBrushCursor() {
         vx: Math.cos(angle) * mag + vel.x * 0.18,
         vy: Math.sin(angle) * mag + vel.y * 0.18,
         life,
-        size: 2 + Math.random() * 5,
+        size: 2.5 + Math.random() * 6,
         color: PAINT[(Math.random() * PAINT.length) | 0],
         spin: (Math.random() - 0.5) * 0.2,
       });
-      if (particles.length > 220) particles.splice(0, particles.length - 220);
+      if (particles.length > MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
     };
 
     const splat = (x: number, y: number) => {
-      for (let i = 0; i < 22; i++) {
-        const angle = (i / 22) * Math.PI * 2 + Math.random() * 0.4;
-        const mag = 1.6 + Math.random() * 4.5;
+      for (let i = 0; i < 30; i++) {
+        const angle = (i / 30) * Math.PI * 2 + Math.random() * 0.4;
+        const mag = 1.6 + Math.random() * 5;
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * mag,
           vy: Math.sin(angle) * mag,
           life: 1,
-          size: 2 + Math.random() * 7,
+          size: 2.5 + Math.random() * 8,
           color: PAINT[(Math.random() * PAINT.length) | 0],
           spin: (Math.random() - 0.5) * 0.25,
         });
       }
+      if (particles.length > MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
     };
 
     /* ── Pointer listeners ── */
@@ -175,32 +183,33 @@ export default function MakeupBrushCursor() {
       const dt = Math.min((now - last) / 16.667, 3);
       last = now;
 
-      /* Smooth follow */
+      /* Smooth follow — floaty: the brush trails the pointer with a soft lag */
       const dx = pointer.x - brushPos.x;
       const dy = pointer.y - brushPos.y;
-      brushPos.x += dx * 0.28;
-      brushPos.y += dy * 0.28;
+      brushPos.x += dx * FOLLOW;
+      brushPos.y += dy * FOLLOW;
       vel.x = dx * 0.35;
       vel.y = dy * 0.35;
 
       /* Tilt reacts to horizontal movement */
-      const targetTilt = Math.max(-26, Math.min(26, vel.x * 0.9));
-      tilt += (targetTilt - tilt) * 0.12;
+      const targetTilt = Math.max(-26, Math.min(26, vel.x * 0.6));
+      tilt += (targetTilt - tilt) * 0.08;
 
       /* Hover scale */
-      scale += (targetScale - scale) * 0.16;
+      scale += (targetScale - scale) * 0.14;
 
-      /* Paint trail — spawn along the travelled path */
+      /* Paint trail — a rich ribbon laid down along the travelled path */
       if (visible && now - lastSpawn > 16) {
         lastSpawn = now;
-        const steps = Math.min(4, Math.max(1, Math.round(Math.hypot(dx, dy) / 6)));
+        const dist = Math.hypot(dx, dy);
+        const steps = Math.min(MAX_STEPS, TRAIL_MIN + Math.round(dist / 3.5));
         for (let i = 0; i < steps; i++) {
           const t = (i + 1) / steps;
           spawn(
-            brushPos.x + dx * t * 0.6,
-            brushPos.y + dy * t * 0.6,
-            0.55,
-            0.55 + Math.random() * 0.35,
+            brushPos.x + dx * t * 0.7,
+            brushPos.y + dy * t * 0.7,
+            0.6,
+            0.7 + Math.random() * 0.45,
           );
         }
       }
@@ -223,7 +232,7 @@ export default function MakeupBrushCursor() {
         p.spin += 0.01 * dt;
 
         const [r, g, b] = p.color;
-        const alpha = Math.max(0, p.life) * 0.55;
+        const alpha = Math.max(0, p.life) * TRAIL_ALPHA;
         const radius = p.size * (0.6 + p.life * 0.8);
 
         const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
