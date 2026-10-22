@@ -1,22 +1,28 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { priceSummary } from "../lib/services";
+import { SITE } from "../lib/site";
 
 type Msg = { role: "bot" | "user"; text: string };
 
 const RESPONSES: Record<string, string> = {
-  book:       "Of course! 📅 You can book directly using the form on this page, or scroll up to 'Book Your Experience'. We're open daily from 10 AM to 8 PM. What service interests you?",
-  appointment:"Let's get you booked! 🗓️ Just scroll up to the 'Book Your Experience' section and fill in your details. Want me to tell you about our services first?",
-  service:    "We offer a wide range of premium services:\n\n✂️ Hair Styling from ₹499\n🎨 Hair Colouring from ₹1,299\n💆 Hair Spa from ₹799\n✨ Keratin Treatment from ₹2,499\n👑 Bridal Package from ₹5,999\n💅 Nail Art from ₹399\n\nWhich one interests you?",
-  price:      "Quick pricing overview:\n\n• Hair Cut & Style — ₹499+\n• Hair Colouring — ₹1,299+\n• Hair Spa — ₹799+\n• Keratin — ₹2,499+\n• Bridal — ₹5,999+\n• Nails — ₹399+\n\nFinal pricing depends on hair length. Shall I help you book?",
-  timing:     "We're open every day from 10:00 AM to 8:00 PM 🕙\n\nLast appointment slot is at 7:00 PM. Walk-ins welcome, but booking guarantees your slot!",
-  location:   "We have branches across Chennai including Anna Nagar, T. Nagar, Nungambakkam, and more! 📍 Each branch offers our full premium service range.",
-  bridal:     "Our Bridal Package is our most loved service! 👑 Starting at ₹5,999, it includes:\n\n• Complete bridal makeup\n• Hairstyling & draping\n• Pre-bridal skin prep\n• Touch-up kit\n\nBrides book months in advance — shall I help you reserve your date?",
-  keratin:    "Keratin treatment gives you smooth, frizz-free hair for 3–5 months! ✨\n\nStarting at ₹2,499. Sessions take around 2–3 hours. Completely worth it. Want to book a consultation?",
+  book:       `Of course! 📅 You can book directly using the form on this page, or scroll up to 'Reserve Your Experience'. We're open daily from ${SITE.hours}. What service interests you?`,
+  appointment:`Let's get you booked! 🗓️ Just scroll up to the 'Reserve Your Experience' section and fill in your details. Want me to tell you about our services first?`,
+  service:    `We offer a wide range of premium services:\n\n${priceSummary()}\n\nWhich one interests you?`,
+  price:      `Quick pricing overview:\n\n${priceSummary()}\n\nFinal pricing depends on hair length and the stylist you choose. Shall I help you book?`,
+  timing:     `We're open every day from ${SITE.hours} 🕙\n\nLast appointment slot is at 7:00 PM. Walk-ins welcome, but booking guarantees your slot!`,
+  location:   `We have branches across Chennai — Anna Nagar, T. Nagar and Nungambakkam! 📍 Each branch offers our full premium service range.`,
+  bridal:     "Our Bridal Package is our most loved service! 👑 Starting at ₹5,999, it includes:\n\n• Pre-bridal skin prep\n• Complete bridal makeup\n• Hairstyling & draping\n• Touch-up kit\n\nBrides book months in advance — shall I help you reserve your date?",
+  keratin:    "Keratin treatment gives you smooth, frizz-free hair for 3–5 months! ✨\n\nStarting at ₹2,499. Sessions take around 2 hours. Completely worth it. Want to book a consultation?",
+  facial:     "Our Skin Care Facial starts at ₹899 🧖 and includes a skin analysis, deep cleanse, exfoliation and a hydrating mask. Around 60 minutes. Shall I book you in?",
+  threading:  "Threading & Waxing starts at ₹199 🌸 — quick, hygienic and done with skin-friendly products. Want to add it to a booking?",
+  nail:       "Nail Art & Care starts at ₹399 💅 — manicures, pedicures and intricate art with long-wear formulas. Ready to book?",
+  salon:      "Naturals has been Chennai's most loved salon for over 15 years 🌸 Premium products, certified artists and a space designed to feel calm. What would you like to book?",
   hello:      "Hello! 🌸 So lovely to have you here. How can Aura assist you today?",
   hi:         "Hi there! ✨ Welcome to Naturals. How can I help you today?",
   thanks:     "You're so welcome! 💜 Is there anything else I can help you with?",
-  default:    "That's a great question! Our team would love to assist you personally. You can call us at +91 44 2345 6789 or book an appointment and our stylists will address all queries during your visit. 🌸",
+  default:    `That's a great question! Our team would love to assist you personally. You can call us on ${SITE.phoneDisplay} or book an appointment and our stylists will address all queries during your visit. 🌸`,
 };
 
 function getResponse(msg: string): string {
@@ -34,30 +40,51 @@ export default function ChatBot() {
   const [typing, setTyping] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [showQuick, setShowQuick] = useState(true);
+  const [pending, setPending] = useState<{ id: number; text: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const reqId = useRef(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
+  /* Greeting — fires once, the first time the panel is opened. */
+  useEffect(() => {
+    if (!initialized) return;
+    const timer = setTimeout(() => {
+      setMessages([
+        {
+          role: "bot",
+          text: "Hi there! ✨ I'm Aura, your personal Naturals assistant. I can help you book appointments, explore our services, or answer any questions!",
+        },
+      ]);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [initialized]);
+
+  /* Reply — a short, deterministic "typing" delay keyed off the message length. */
+  useEffect(() => {
+    if (!pending) return;
+    const { id, text } = pending;
+    const delay = 900 + (text.length % 5) * 90;
+    const timer = setTimeout(() => {
+      setTyping(false);
+      setMessages((m) => [...m, { role: "bot", text: getResponse(text) }]);
+      setPending((p) => (p && p.id === id ? null : p));
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [pending]);
+
   function toggleChat() {
     setOpen((o) => !o);
-    if (!initialized) {
-      setInitialized(true);
-      setTimeout(() => {
-        setMessages([{ role: "bot", text: "Hi there! ✨ I'm Aura, your personal Naturals assistant. I'm here to help you book appointments, explore our services, or answer any questions!" }]);
-      }, 400);
-    }
+    setInitialized(true);
   }
 
   function sendMsg(text: string) {
     setMessages((m) => [...m, { role: "user", text }]);
     setShowQuick(false);
     setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      setMessages((m) => [...m, { role: "bot", text: getResponse(text) }]);
-    }, 900 + Math.random() * 400);
+    setPending({ id: ++reqId.current, text });
   }
 
   function handleSend() {

@@ -31,19 +31,23 @@ export default function Testimonials() {
   return (
     <section
       id="reviews"
-      style={{ padding: "120px 60px", background: "rgba(59,7,100,0.6)", textAlign: "center" }}
+      className="section-pad"
+      style={{ background: "rgba(59,7,100,0.6)", textAlign: "center" }}
     >
       <span className="section-label reveal">Testimonials</span>
-      <h2 className="font-display reveal" style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, marginBottom: "64px" }}>
+      <h2 className="font-display reveal" style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px" }}>
         Words from Our<br />
         <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>Beloved Clients</em>
       </h2>
+      <p className="reveal" style={{ color: "rgba(253,251,255,0.5)", fontSize: "0.78rem", letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "64px" }}>
+        <span style={{ color: "var(--gold)" }}>★★★★★</span> 4.9 average from 2,400+ reviews
+      </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px", maxWidth: "1100px", margin: "0 auto" }}>
+      <div className="grid-3 reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {REVIEWS.map((r) => (
           <div
             key={r.name}
-            className="reveal"
+            className="reveal testimonial-card"
             style={{
               background: "rgba(107,33,168,0.1)",
               border: "1px solid rgba(168,85,247,0.12)",
@@ -51,14 +55,6 @@ export default function Testimonials() {
               borderRadius: "4px",
               textAlign: "left",
               transition: "border-color 0.3s, transform 0.3s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(192,132,252,0.3)";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(168,85,247,0.12)";
-              (e.currentTarget as HTMLElement).style.transform = "";
             }}
           >
             <div style={{ color: "var(--gold)", fontSize: "0.85rem", marginBottom: "20px", letterSpacing: "3px" }}>{r.stars}</div>

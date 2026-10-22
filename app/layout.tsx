@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
+import { SITE } from "./lib/site";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -16,15 +17,43 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Naturals Salon — Where Beauty Begins",
+  metadataBase: new URL(`https://${SITE.domain}`),
+  title: {
+    default: "Naturals Salon — Where Beauty Begins",
+    template: "%s | Naturals Salon",
+  },
   description:
-    "Chennai's premier salon experience. Transformations crafted with artistry, care, and a touch of the extraordinary.",
-  keywords: "naturals salon, hair salon, beauty salon, haircut, hair coloring, balayage, hair spa, Chennai",
+    "Chennai's premier salon experience. Premium hair, skin, nail and bridal artistry, crafted by certified artists across three Chennai studios.",
+  keywords:
+    "naturals salon, hair salon chennai, beauty salon, haircut, hair colouring, balayage, keratin, hair spa, bridal makeup, nail art, facial, threading",
+  authors: [{ name: "Naturals Salon" }],
+  creator: "Naturals Salon",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Naturals Salon — Where Beauty Begins",
-    description: "Chennai's most loved salon for over 15 years. Premium services, expert artists.",
+    description:
+      "Chennai's most loved salon for over 15 years. Premium services, certified artists, three studios across the city.",
+    url: "/",
+    siteName: "Naturals Salon",
     type: "website",
+    locale: "en_IN",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Naturals Salon — Where Beauty Begins",
+    description: "Premium hair, skin, nail and bridal artistry across Chennai.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  category: "beauty",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#3B0764",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -33,8 +62,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable} h-full`}>
-      <body className="min-h-full flex flex-col" style={{ background: "var(--purple-deep)", color: "var(--white)" }}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${cormorant.variable} ${jost.variable} h-full`}
+    >
+      <body
+        className="min-h-full flex flex-col"
+        style={{ background: "var(--purple-deep)", color: "var(--white)" }}
+      >
         {children}
       </body>
     </html>

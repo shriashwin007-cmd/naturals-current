@@ -8,6 +8,7 @@ const LINKS = [
   { label: "Book",     href: "#booking"  },
   { label: "About",    href: "#about"    },
   { label: "Reviews",  href: "#reviews"  },
+  { label: "Contact",  href: "#contact"  },
 ];
 
 export default function Navbar() {
@@ -27,7 +28,6 @@ export default function Navbar() {
         top: 0,
         width: "100%",
         zIndex: 100,
-        padding: "22px 60px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -36,6 +36,7 @@ export default function Navbar() {
         borderBottom: "1px solid rgba(168,85,247,0.15)",
         transition: "background 0.4s",
       }}
+      className="site-nav"
     >
       {/* Logo */}
       <a
@@ -47,7 +48,7 @@ export default function Navbar() {
       </a>
 
       {/* Desktop links */}
-      <ul className="hidden md:flex" style={{ gap: "40px", listStyle: "none" }}>
+      <ul className="hidden md:flex" style={{ gap: "32px", listStyle: "none" }}>
         {LINKS.map((l) => (
           <li key={l.href}>
             <a href={l.href} className="nav-link-dark">{l.label}</a>

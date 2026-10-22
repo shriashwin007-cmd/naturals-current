@@ -1,47 +1,225 @@
+"use client";
+
+import { useState } from "react";
+import { BRANCHES, SITE, mapDirectionsUrl, mapEmbedUrl } from "../lib/site";
+
 export default function Contact() {
+  const [active, setActive] = useState(0);
+  const branch = BRANCHES[active];
+
   return (
-    <section id="contact" className="py-24 md:py-32 bg-[#F5F0FF]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="relative rounded-3xl overflow-hidden p-12 md:p-16 text-center"
+    <section id="contact" className="section-pad" style={{ background: "#FAF7FF" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <span className="section-label reveal" style={{ color: "var(--purple-mid)" }}>
+            Visit Us
+          </span>
+          <h2
+            className="font-display reveal"
+            style={{
+              fontSize: "clamp(2.4rem, 4vw, 4rem)",
+              fontWeight: 300,
+              lineHeight: 1.1,
+              color: "var(--purple-deep)",
+            }}
+          >
+            Find Your Nearest<br />
+            <em style={{ fontStyle: "italic", color: "var(--purple-light)" }}>
+              Naturals Studio
+            </em>
+          </h2>
+          <p
+            className="reveal"
+            style={{
+              color: "rgba(30,0,60,0.6)",
+              lineHeight: 1.9,
+              fontSize: "0.9rem",
+              maxWidth: "520px",
+              margin: "20px auto 0",
+            }}
+          >
+            Three studios across Chennai, each with its own character and the same
+            full premium service range. Walk in, or book your slot ahead of time.
+          </p>
+        </div>
+
+        {/* Branch tabs */}
+        <div
+          className="reveal"
           style={{
-            background: "linear-gradient(135deg, #6B21A8 0%, #7C3AED 50%, #6B21A8 100%)",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            justifyContent: "center",
+            marginBottom: "40px",
           }}
         >
-          {/* Decorative orbs */}
-          <div className="absolute top-0 left-0 w-48 h-48 opacity-20 rounded-full"
-            style={{ background: "radial-gradient(circle, #C084FC, transparent)", transform: "translate(-30%, -30%)" }}
-          />
-          <div className="absolute bottom-0 right-0 w-48 h-48 opacity-20 rounded-full"
-            style={{ background: "radial-gradient(circle, #C084FC, transparent)", transform: "translate(30%, 30%)" }}
-          />
+          {BRANCHES.map((b, i) => (
+            <button
+              key={b.id}
+              onClick={() => setActive(i)}
+              aria-pressed={i === active}
+              style={{
+                background: i === active ? "var(--purple-mid)" : "rgba(107,33,168,0.06)",
+                border: `1px solid ${i === active ? "var(--purple-mid)" : "rgba(107,33,168,0.15)"}`,
+                color: i === active ? "var(--white)" : "rgba(30,0,60,0.6)",
+                padding: "10px 24px",
+                fontFamily: "var(--font-jost)",
+                fontSize: "0.7rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                borderRadius: "2px",
+                cursor: "pointer",
+                transition: "background 0.3s, color 0.3s, border-color 0.3s",
+              }}
+            >
+              {b.name}
+            </button>
+          ))}
+        </div>
 
-          <div className="relative z-10">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-10 bg-white/40" />
-              <span className="text-white/80 text-xs tracking-[0.3em] uppercase font-medium">Visit Us Today</span>
-              <div className="h-px w-10 bg-white/40" />
-            </div>
+        {/* Details + map */}
+        <div className="grid-2 reveal" style={{ alignItems: "stretch" }}>
 
-            <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "var(--font-playfair)" }}>
-              Your Best Look{" "}
-              <span className="italic text-[#E9D5FF]">Awaits You</span>
-            </h2>
-
-            <p className="text-white/70 text-base max-w-xl mx-auto mb-10 leading-relaxed">
-              Walk in, book a slot, or call us. Our expert team is ready to transform your look and elevate your confidence.
+          {/* Details */}
+          <div
+            style={{
+              background: "#fff",
+              border: "1px solid rgba(107,33,168,0.1)",
+              boxShadow: "0 2px 20px rgba(107,33,168,0.06)",
+              padding: "48px 44px",
+            }}
+          >
+            <h3
+              className="font-display"
+              style={{
+                fontSize: "1.8rem",
+                fontWeight: 400,
+                color: "var(--purple-deep)",
+                marginBottom: "6px",
+              }}
+            >
+              {branch.name}
+            </h3>
+            <p
+              style={{
+                fontSize: "0.62rem",
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+                marginBottom: "28px",
+              }}
+            >
+              {branch.area}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#booking" className="bg-white text-[#6B21A8] font-bold px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-[#F5F0FF] transition-colors hover:shadow-xl">
-                Book Appointment
+            <dl style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
+              <DetailRow label="Address">
+                {branch.address}
+              </DetailRow>
+              <DetailRow label="Phone">
+                <a
+                  href={branch.phoneHref}
+                  style={{ color: "var(--purple-mid)", textDecoration: "none" }}
+                >
+                  {branch.phone}
+                </a>
+              </DetailRow>
+              <DetailRow label="Email">
+                <a
+                  href={`mailto:${SITE.email}`}
+                  style={{ color: "var(--purple-mid)", textDecoration: "none" }}
+                >
+                  {SITE.email}
+                </a>
+              </DetailRow>
+              <DetailRow label="Hours">
+                {SITE.hours}
+                <span style={{ color: "rgba(30,0,60,0.45)" }}> · {SITE.hoursDetail}</span>
+              </DetailRow>
+            </dl>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "34px" }}>
+              <a
+                href="#booking"
+                className="hero-cta hero-cta-primary"
+                style={{ background: "var(--purple-mid)", color: "var(--white)" }}
+              >
+                Book a Slot
               </a>
-              <a href="tel:+919876543210" className="border-2 border-white/60 text-white font-bold px-10 py-4 rounded-full text-sm tracking-widest uppercase hover:bg-white/10 transition-colors">
-                Call +91 98765 43210
+              <a
+                href={mapDirectionsUrl(branch)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta hero-cta-ghost"
+                style={{
+                  borderColor: "rgba(107,33,168,0.3)",
+                  color: "var(--purple-mid)",
+                }}
+              >
+                Get Directions
               </a>
             </div>
+          </div>
+
+          {/* Map */}
+          <div
+            style={{
+              position: "relative",
+              minHeight: "420px",
+              border: "1px solid rgba(107,33,168,0.12)",
+              overflow: "hidden",
+              background: "var(--purple-deep)",
+            }}
+          >
+            <iframe
+              key={branch.id}
+              title={`${branch.name} branch location`}
+              src={mapEmbedUrl(branch)}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                border: 0,
+              }}
+            />
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", gap: "18px", alignItems: "flex-start" }}>
+      <dt
+        style={{
+          fontSize: "0.6rem",
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "rgba(30,0,60,0.42)",
+          width: "78px",
+          flexShrink: 0,
+          paddingTop: "3px",
+        }}
+      >
+        {label}
+      </dt>
+      <dd
+        style={{
+          fontSize: "0.88rem",
+          lineHeight: 1.7,
+          color: "rgba(30,0,60,0.75)",
+        }}
+      >
+        {children}
+      </dd>
+    </div>
   );
 }

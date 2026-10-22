@@ -1,17 +1,38 @@
 "use client";
+
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 const IMAGES = [
-  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892346/showroom_1._WhatsApp_Image_2026-06-19_at_7.51.21_PM_qs2bom.jpg", label: "Our Salon" },
-  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892347/showroom_2._WhatsApp_Image_2026-06-19_at_7.51.22_PM_mwvtit.jpg", label: "Styling Stations" },
-  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892348/showroom_3._WhatsApp_Image_2026-06-19_at_7.51.24_PM_imhkep.jpg", label: "Wash Area" },
-  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892350/showroom_4._WhatsApp_Image_2026-06-19_at_7.52.21_PM_faig2o.jpg", label: "Premium Seating" },
-  { src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892352/showroom_5._WhatsApp_Image_2026-06-19_at_7.53.04_PM_suzn9d.jpg", label: "Interior Design" },
+  {
+    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892346/showroom_1._WhatsApp_Image_2026-06-19_at_7.51.21_PM_qs2bom.jpg",
+    label: "Our Salon",
+    alt: "The main floor of the Naturals salon",
+  },
+  {
+    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892347/showroom_2._WhatsApp_Image_2026-06-19_at_7.51.22_PM_mwvtit.jpg",
+    label: "Styling Stations",
+    alt: "Styling stations at the Naturals salon",
+  },
+  {
+    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892348/showroom_3._WhatsApp_Image_2026-06-19_at_7.51.24_PM_imhkep.jpg",
+    label: "Wash Area",
+    alt: "The shampoo and wash area",
+  },
+  {
+    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892350/showroom_4._WhatsApp_Image_2026-06-19_at_7.52.21_PM_faig2o.jpg",
+    label: "Premium Seating",
+    alt: "The premium waiting lounge seating",
+  },
+  {
+    src: "https://res.cloudinary.com/dxvui0xkz/image/upload/v1781892352/showroom_5._WhatsApp_Image_2026-06-19_at_7.53.04_PM_suzn9d.jpg",
+    label: "Interior Design",
+    alt: "Interior detailing and lighting",
+  },
 ];
 
 /* Each image has its own parallax speed for depth variety */
-const SPEEDS = [0.14, 0.20, 0.18, 0.22, 0.16];
+const SPEEDS = [0.14, 0.2, 0.18, 0.22, 0.16];
 
 export default function Gallery() {
   const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -31,7 +52,10 @@ export default function Gallery() {
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
-        requestAnimationFrame(() => { update(); ticking = false; });
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
         ticking = true;
       }
     };
@@ -39,60 +63,98 @@ export default function Gallery() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <section id="gallery" style={{ padding: "120px 60px", background: "rgba(30,0,50,0.5)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+  const parallaxLayer = (index: number, children: React.ReactNode) => (
+    <div
+      ref={(el) => {
+        layerRefs.current[index] = el;
+      }}
+      style={{
+        position: "absolute",
+        top: "-18%",
+        left: 0,
+        width: "100%",
+        height: "136%",
+        willChange: "transform",
+      }}
+    >
+      {children}
+    </div>
+  );
 
+  return (
+    <section id="gallery" className="section-pad" style={{ background: "rgba(30,0,50,0.5)" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: "56px" }}>
           <span className="section-label reveal">Our Space</span>
-          <h2 className="font-display reveal" style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1 }}>
+          <h2
+            className="font-display reveal"
+            style={{ fontSize: "clamp(2.4rem, 4vw, 4rem)", fontWeight: 300, lineHeight: 1.1 }}
+          >
             Step Inside<br />
             <em style={{ fontStyle: "italic", color: "var(--purple-glow)" }}>Our World</em>
           </h2>
+          <p
+            className="reveal"
+            style={{
+              color: "rgba(253,251,255,0.5)",
+              fontSize: "0.88rem",
+              lineHeight: 1.8,
+              maxWidth: "460px",
+              marginTop: "18px",
+            }}
+          >
+            A calm, considered space where every station is set for you — warm
+            light, clean lines and nothing that asks for attention but the work.
+          </p>
         </div>
 
         {/* Mosaic */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
-
+        <div className="gallery-mosaic">
           {/* Large featured — col-span-2 */}
-          <div style={{
-            gridColumn: "span 2",
-            position: "relative", height: "500px",
-            overflow: "hidden",
-            border: "1px solid rgba(168,85,247,0.12)",
-          }}>
+          <div className="gallery-feature">
+            {parallaxLayer(
+              0,
+              <Image
+                src={IMAGES[0].src}
+                alt={IMAGES[0].alt}
+                fill
+                className="object-cover"
+                sizes="66vw"
+                priority
+              />,
+            )}
             <div
-              ref={(el) => { layerRefs.current[0] = el; }}
-              style={{ position: "absolute", top: "-18%", left: 0, width: "100%", height: "136%", willChange: "transform" }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(20,0,40,0.65), transparent 55%)",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                bottom: "22px",
+                left: "26px",
+                fontSize: "0.62rem",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "rgba(253,251,255,0.7)",
+                zIndex: 2,
+              }}
             >
-              <Image src={IMAGES[0].src} alt={IMAGES[0].label} fill className="object-cover" sizes="66vw" priority />
-            </div>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(20,0,40,0.65), transparent 55%)" }} />
-            <span style={{
-              position: "absolute", bottom: "22px", left: "26px",
-              fontSize: "0.62rem", letterSpacing: "0.28em", textTransform: "uppercase",
-              color: "rgba(253,251,255,0.7)", zIndex: 2,
-            }}>
               {IMAGES[0].label}
             </span>
           </div>
 
           {/* Right column — 2 stacked */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          <div className="gallery-stack">
             {IMAGES.slice(1, 3).map((img, i) => (
-              <div key={i} style={{
-                position: "relative", flex: 1,
-                overflow: "hidden",
-                border: "1px solid rgba(168,85,247,0.12)",
-                minHeight: "247px",
-              }}>
-                <div
-                  ref={(el) => { layerRefs.current[i + 1] = el; }}
-                  style={{ position: "absolute", top: "-18%", left: 0, width: "100%", height: "136%", willChange: "transform" }}
-                >
-                  <Image src={img.src} alt={img.label} fill className="object-cover" sizes="33vw" />
-                </div>
+              <div key={img.src} className="gallery-cell">
+                {parallaxLayer(
+                  i + 1,
+                  <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="33vw" />,
+                )}
                 <div style={{ position: "absolute", inset: 0, background: "rgba(20,0,40,0.25)" }} />
               </div>
             ))}
@@ -100,34 +162,40 @@ export default function Gallery() {
 
           {/* Bottom row — 3 equal */}
           {IMAGES.slice(2, 5).map((img, i) => (
-            <div key={i} style={{
-              position: "relative", height: "260px",
-              overflow: "hidden",
-              border: "1px solid rgba(168,85,247,0.12)",
-            }}>
-              <div
-                ref={(el) => { layerRefs.current[i + 3] = el; }}
-                style={{ position: "absolute", top: "-18%", left: 0, width: "100%", height: "136%", willChange: "transform" }}
-              >
-                <Image src={img.src} alt={img.label} fill className="object-cover" sizes="33vw" />
-              </div>
+            <div key={img.src} className="gallery-cell gallery-cell--tall">
+              {parallaxLayer(
+                i + 3,
+                <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="33vw" />,
+              )}
               <div style={{ position: "absolute", inset: 0, background: "rgba(20,0,40,0.2)" }} />
-              <span style={{
-                position: "absolute", bottom: "16px", left: "18px",
-                fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase",
-                color: "rgba(253,251,255,0.55)", zIndex: 2,
-              }}>
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: "16px",
+                  left: "18px",
+                  fontSize: "0.58rem",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "rgba(253,251,255,0.55)",
+                  zIndex: 2,
+                }}
+              >
                 {img.label}
               </span>
             </div>
           ))}
         </div>
 
-        <p style={{
-          textAlign: "center", marginTop: "28px",
-          fontSize: "0.62rem", letterSpacing: "0.28em", textTransform: "uppercase",
-          color: "rgba(253,251,255,0.28)",
-        }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "28px",
+            fontSize: "0.62rem",
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: "rgba(253,251,255,0.28)",
+          }}
+        >
           Naturals Signature — Premium Salon Interior
         </p>
       </div>
